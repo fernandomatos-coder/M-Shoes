@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M Shoes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header" id="mainHeader">
+    <div class="header-left">
+        <button class="btn-back" id="backBtn" onclick="goBack()">&lt; VOLTAR</button>
+    </div>
+    
+    <div class="header-center">
+        <div id="headerHomeLogo" class="logo-inline">
+            <img src="logo.png" class="logo-m" alt="M">
+            <span class="logo-text">Shoes</span>
+        </div>
+        <h1 id="checkoutTitle" class="header-title">FINALIZAÇÃO DE COMPRA</h1>
+    </div>
+
+    <div class="header-right">
+        <img src="logo.png" class="logo-right-icon" id="rightLogo" alt="M">
+    </div>
+</header>
+
+<section id="home" class="page active">
+    <div class="home-container">
+        <div class="home-image">
+            <img src="corredor.jpeg" alt="Corredor">
+        </div>
+        <div class="home-brand">
+            <img src="logo.png" alt="M" class="brand-m-large">
+            <p class="slogan">PARA VOCÊ IR MAIS LONGE</p>
+            <button class="btn-main" onclick="showPage('catalog')">ENCONTRAR O MEU TÊNIS</button>
+        </div>
+    </div>
+</section>
+
+<section id="catalog" class="page">
+    <div class="catalog-layout">
+        <div class="product-grid" id="productList"></div>
+        
+        <aside id="cart-drawer" class="cart-column">
+            <h3>SEU CARRINHO</h3>
+            <div class="cart-items">
+                <div id="cart-items-list">
+                    <p style="font-size: 14px; color: #777;">Seu carrinho está vazio</p>
+                </div>
+            </div>
+
+            <div class="coupon-area">
+                <input type="text" id="cupom-input" placeholder="CUPOM">
+                <button onclick="aplicarCupom()">OK</button>
+                <p id="cupom-feedback"></p>
+            </div>
+
+            <div class="cart-total">Total: <span id="cart-total-value">R$ 0,00</span></div>
+            <button class="btn-final" id="btn-go-checkout" onclick="goToCheckout()" style="display: none;">PAGAR AGORA</button>
+        </aside>
+    </div>
+</section>
+
+<section id="checkout" class="page">
+    <div class="checkout-layout">
+        <div class="checkout-column checkout-info">
+            <div class="checkout-form">
+                <h2>INFORMAÇÕES</h2>
+                
+                <div class="input-group">
+                    <label>Nome completo</label>
+                    <input type="text" class="input-pill" id="nome" placeholder="Digite seu nome completo" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>E-mail</label>
+                    <input type="email" class="input-pill" id="email" placeholder="exemplo@email.com" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>CPF</label>
+                    <input type="text" class="input-pill" id="cpf" placeholder="000.000.000-00" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Endereço</label>
+                    <input type="text" class="input-pill" id="endereco" placeholder="Rua, Número, Bairro, Cidade" required>
+                </div>
+                
+                <h2>PAGAMENTO</h2>
+                
+                <div class="payment-options">
+                    <div class="payment-option">
+                        <input type="radio" name="pgto" value="cartao" id="cartao" checked>
+                        <label class="payment-label" for="cartao">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Cartão</span>
+                        </label>
+                    </div>
+                    <div class="payment-option">
+                        <input type="radio" name="pgto" value="pix" id="pix">
+                        <label class="payment-label" for="pix">
+                            <i class="fas fa-qrcode"></i>
+                            <span>PIX</span>
+                        </label>
+                    </div>
+                    <div class="payment-option">
+                        <input type="radio" name="pgto" value="boleto" id="boleto">
+                        <label class="payment-label" for="boleto">
+                            <i class="fas fa-barcode"></i>
+                            <span>Boleto</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="payment-fields">
+                    <!-- CARTÃO -->
+                    <div id="campo-cartao" class="payment-field active">
+                        <div class="input-group">
+                            <label>Número do cartão</label>
+                            <input type="text" class="input-pill" id="numero-cartao" placeholder="0000 0000 0000 0000" maxlength="19">
+                        </div>
+                        <div class="card-details">
+                            <div class="input-group">
+                                <label>Validade</label>
+                                <input type="text" class="input-pill" id="validade" placeholder="MM/AA" maxlength="5">
+                            </div>
+                            <div class="input-group">
+                                <label>CVV</label>
+                                <input type="text" class="input-pill" id="cvv" placeholder="123" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- PIX -->
+                    <div id="campo-pix" class="payment-field">
+                        <div class="pix-box">
+                            <i class="fas fa-qrcode" style="font-size: 50px; margin-bottom: 15px; color: var(--azul);"></i>
+                            <p style="font-size: 18px; margin-bottom: 10px;"><strong>PAGAMENTO VIA PIX</strong></p>
+                            <p style="margin-bottom: 15px;">Chave PIX (CNPJ):</p>
+                            <div class="pix-key" id="pix-key">
+                                00.123.456/0001-99
+                                <button class="btn-copy" onclick="copyPixKey()">
+                                    <i class="far fa-copy"></i> Copiar
+                                </button>
+                            </div>
+                            <p style="font-size: 14px; margin-top: 15px; color: #666;">
+                                Após finalizar a compra, você terá 30 minutos para realizar o pagamento.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- BOLETO -->
+                    <div id="campo-boleto" class="payment-field">
+                        <div class="boleto-box">
+                            <i class="fas fa-barcode" style="font-size: 50px; margin-bottom: 15px; color: var(--azul);"></i>
+                            <p style="font-size: 18px; margin-bottom: 10px;"><strong>BOLETO BANCÁRIO</strong></p>
+                            <p>O boleto será enviado para o e-mail:</p>
+                            <div class="boleto-email" id="boleto-email">carregando...</div>
+                            <p style="font-size: 14px; margin-top: 15px; color: #666;">
+                                Prazo de compensação: até 3 dias úteis após o pagamento.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-column checkout-summary">
+            <div class="checkout-summary-card">
+                <div class="summary-header">
+                    <h3>RESUMO DO PEDIDO</h3>
+                    <div class="item-count" id="itemCount">1 item</div>
+                </div>
+                
+                <div class="product-carousel">
+                    <div class="carousel-container">
+                        <div id="carousel-track" class="carousel-track">
+                            <!-- As imagens serão inseridas aqui via JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-controls">
+                        <button class="carousel-btn prev" onclick="prevProduct()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        
+                        <div class="carousel-dots" id="carouselDots">
+                            <!-- Os dots serão inseridos aqui via JavaScript -->
+                        </div>
+                        
+                        <button class="carousel-btn next" onclick="nextProduct()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="order-details">
+                    <div class="detail-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">R$ 0,00</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Desconto</span>
+                        <span id="desconto-valor">-R$ 0,00</span>
+                    </div>
+                    <div class="detail-row total">
+                        <span>TOTAL</span>
+                        <span id="total-final">R$ 0,00</span>
+                    </div>
+                </div>
+                
+                <button id="finalizar" class="btn-final btn-destaque" disabled onclick="showPage('success')">
+                    <i class="fas fa-lock"></i> FINALIZAR COMPRA
+                </button>
+                
+                <div class="security-info">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Compra 100% segura</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Seção de Confirmação (Success) - MODIFICADA: QUADRADO ÚNICO -->
+<section id="success" class="page">
+    <div class="success-container">
+        <div class="success-header">
+            <h2>MANDOU BEM NA SUA ESCOLHA!</h2>
+            <p class="success-subtitle">Recebemos o seu pedido e já estamos preparando tudo por aqui.</p>
+        </div>
+        
+        <!-- QUADRADO ÚNICO COM INFORMAÇÕES E PRODUTO -->
+        <div class="unified-order-box">
+            <div class="order-info-section">
+                <div class="order-details-left">
+                    <div class="order-info-item">
+                        <p><strong>Pedido:</strong> #12345</p>
+                    </div>
+                    <div class="order-info-item">
+                        <p><strong>Previsão de entrega:</strong> 5 dias úteis após a realização do pagamento</p>
+                    </div>
+                    <div class="order-info-item email-update">
+                        <p><i class="fas fa-envelope"></i> Você receberá atualizações em tempo real no seu e-mail.</p>
+                    </div>
+                </div>
+                
+                <div class="product-info-section" id="productInfoSection">
+                    <!-- Informações do produto serão inseridas aqui via JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="success-actions">
+            <div class="success-brand-bottom">
+                <p>Matos shoes - Para você ir mais longe</p>
+            </div>
+            <div class="success-line"></div>
+            <button class="btn-ok" onclick="resetOrder(); showPage('home')">OK</button>
+        </div>
+    </div>
+</section>
+
+<footer class="main-footer">
+    <div class="footer-contact">
+        <div class="contact-info">
+            <h4>CONTATO</h4>
+            <p><i class="fas fa-envelope"></i> contato@matosshoes.com.br</p>
+            <p><i class="fas fa-phone"></i> (84) 1234-5678</p>
+            <p><i class="fas fa-map-marker-alt"></i> Rua do Esporte, 123 - Santana do Matos</p>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2024 Matos Shoes. Todos os direitos reservados.</p>
+        <p class="footer-cnpj">CNPJ: 00.123.456/0001-99</p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
